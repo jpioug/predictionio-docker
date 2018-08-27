@@ -22,6 +22,14 @@ ENV SCALA_VERSION=2.11.12
 ENV SPARK_VERSION=2.2.2
 ENV HADOOP_VERSION=2.7.7
 ENV ELASTICSEARCH_VERSION=5.5.3
+ENV PGSQL_VERSION=42.2.4
+ENV MYSQL_VERSION=8.0.12
+ENV PIO_HOME=/usr/share/predictionio
+
+RUN apt-get update && \
+    apt-get install -y dpkg-dev fakeroot && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/src
 RUN git clone https://github.com/apache/predictionio.git
@@ -31,5 +39,30 @@ RUN bash ./make-distribution.sh \
       -Dscala.version=$SCALA_VERSION \
       -Dspark.version=$SPARK_VERSION \
       -Dhadoop.version=$HADOOP_VERSION \
-      -Delasticsearch.version=$ELASTICSEARCH_VERSION
+      -Delasticsearch.version=$ELASTICSEARCH_VERSION \
+      --with-deb
+
+RUN dpkg -i ./assembly/target/predictionio_*.deb
+
+RUN cp /etc/predictionio/pio-env.sh /etc/predictionio/pio-env.sh.orig && \
+    echo "#!/usr/bin/env bash" > /etc/predictionio/pio-env.sh
+RUN curl -o $PIO_HOME/lib/postgresql-$PGSQL_VERSION.jar \
+    http://central.maven.org/maven2/org/postgresql/postgresql/$PGSQL_VERSION/postgresql-$PGSQL_VERSION.jar && \
+    curl -o $PIO_HOME/lib/mysql-connector-java-$MYSQL_VERSION.jar \
+    http://central.maven.org/maven2/mysql/mysql-connector-java/$MYSQL_VERSION/mysql-connector-java-$MYSQL_VERSION.jar && \
+    echo "POSTGRES_JDBC_DRIVER=$PIO_HOME/lib/postgresql-$PGSQL_VERSION.jar" >> /etc/predictionio/pio-env.sh && \
+    echo "MYSQL_JDBC_DRIVER=$PIO_HOME/lib/mysql-connector-java-$MYSQL_VERSION.jar" >> /etc/predictionio/pio-env.sh
+
+WORKDIR /usr/share
+RUN curl -o /opt/src/spark-$SPARK_VERSION.tgz \
+    http://www-us.apache.org/dist/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop2.7.tgz && \
+    tar zxvf /opt/src/spark-$SPARK_VERSION.tgz && \
+    echo "SPARK_HOME="`pwd`/`ls -d spark*` >> /etc/predictionio/pio-env.sh
+
+ADD pio_run /usr/bin/pio_run
+
+EXPOSE 7070
+EXPOSE 8000
+
+CMD ["sh", "/usr/bin/pio_run"]
 

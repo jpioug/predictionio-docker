@@ -1,0 +1,12 @@
+#!/bin/bash
+
+. /etc/predictionio/pio-env.sh
+
+# TODO check elasticsearch status
+
+# Check PIO status
+$PIO_HOME/bin/pio status
+
+# Start PIO Event Server
+$PIO_HOME/bin/pio eventserver
+
