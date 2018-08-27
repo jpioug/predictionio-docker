@@ -2,7 +2,21 @@
 
 . /etc/predictionio/pio-env.sh
 
-# TODO check elasticsearch status
+# check elasticsearch status
+if [ x"$PIO_STORAGE_SOURCES_ELASTICSEARCH_TYPE" != "x" ] ; then
+  RET=-1
+  COUNT=0
+  ES_HOST=`echo $PIO_STORAGE_SOURCES_ELASTICSEARCH_HOSTS | sed -e "s/,.*//"`
+  ES_PORT=`echo $PIO_STORAGE_SOURCES_ELASTICSEARCH_PORTS | sed -e "s/,.*//"`
+  # Wait for elasticsearch startup
+  while [ $RET != 0 -a $COUNT -lt 10 ] ; do
+    echo "[PIO-SETUP] Waiting for ${ES_HOST}..."
+    curl --connect-timeout 60 --retry 10 -s "$ES_HOST:$ES_PORT/_cluster/health?wait_for_status=green&timeout=1m"
+    RET=$?
+    COUNT=`expr $COUNT + 1`
+    sleep 1
+  done
+fi
 
 # Check PIO status
 $PIO_HOME/bin/pio status
