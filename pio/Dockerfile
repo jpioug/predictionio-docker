@@ -59,7 +59,9 @@ RUN curl -o /opt/src/spark-$SPARK_VERSION.tgz \
     tar zxvf /opt/src/spark-$SPARK_VERSION.tgz && \
     echo "SPARK_HOME="`pwd`/`ls -d spark*` >> /etc/predictionio/pio-env.sh
 
+WORKDIR /templates
 ADD pio_run /usr/bin/pio_run
+RUN rm -rf /opt/src
 
 EXPOSE 7070
 EXPOSE 8000
