@@ -21,11 +21,11 @@ docker-compose -f docker-compose.yml -f ... up
 
 Supported storages are as below:
 
-| Type  | Storage                   |
-|:-----:|:--------------------------|
-| Event | Postgresql, Elasticsearch |
-| Meta  | Postgresql, Elasticsearch |
-| Model | Postgresql, LocalFS       |
+| Type  | Storage                          |
+|:-----:|:---------------------------------|
+| Event | Postgresql, MySQL, Elasticsearch |
+| Meta  | Postgresql, MySQL, Elasticsearch |
+| Model | Postgresql, MySQL, LocalFS       |
 
 If you run PredictionIO with Postgresql, run as below:
 
