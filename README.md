@@ -196,7 +196,7 @@ docker-compose -f docker-compose.yml \
 
 See `docker-compose.spark.yml` if changing settings for Spark Cluster.
 
-### Run Only Engine Server
+### Run Engine Server
 
 To deploy your engine and start an engine server, run Docker with `docker-compose.deploy.yml`.
 
