@@ -162,3 +162,53 @@ You can check predictions as below:
 $ curl -H "Content-Type: application/json" \
 -d '{ "user": "1", "num": 4 }' http://localhost:8000/queries.json
 ```
+
+## Advanced Topics
+
+### Run with Elasticsearch
+
+For Elasticsearch, Meta and Event storage are available.
+To start PredictionIO with Elasticsearch,
+
+```
+docker-compose -f docker-compose.yml \
+  -f elasticsearch/docker-compose.base.yml \
+  -f elasticsearch/docker-compose.meta.yml \
+  -f elasticsearch/docker-compose.event.yml \
+  -f localfs/docker-compose.model.yml \
+  up
+```
+
+### Run with Spark Cluster
+
+TBD(wait for bde2020/spark-master:2.2.2-hadoop2.7 image)
+Adding `docker-compose.spark.yml`, you can use Spark cluster on `pio train`.
+
+```
+docker-compose -f docker-compose.yml \
+  -f docker-compose.spark.yml \
+  -f elasticsearch/docker-compose.base.yml \
+  -f elasticsearch/docker-compose.meta.yml \
+  -f elasticsearch/docker-compose.event.yml \
+  -f localfs/docker-compose.model.yml \
+  up
+```
+
+See `docker-compose.spark.yml` if changing settings for Spark Cluster.
+
+### Run Only Engine Server
+
+To deploy your engine and start an engine server, run Docker with `docker-compose.deploy.yml`.
+
+```
+docker-compose -f docker-compose.yml \
+  -f pgsql/docker-compose.base.yml \
+  -f pgsql/docker-compose.meta.yml \
+  -f pgsql/docker-compose.event.yml \
+  -f pgsql/docker-compose.model.yml \
+  -f docker-compose.deploy.yml \
+  up
+```
+
+See `deploy/run.sh` and `docker-compose.deploy.yml` if changing a deployment.
+

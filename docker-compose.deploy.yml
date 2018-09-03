@@ -15,20 +15,9 @@
 
 version: "3"
 services:
-  spark-master:
-    image: bde2020/spark-master:2.2.2-hadoop2.7
-    container_name: spark-master
-    ports:
-      - "8080:8080"
-      - "7077:7077"
+  pio:
     environment:
-      - INIT_DAEMON_STEP=setup_spark
-  spark-worker-1:
-    image: bde2020/spark-worker:2.2.2-hadoop2.7
-    container_name: spark-worker-1
-    depends_on:
-      - spark-master
-    ports:
-      - "8081:8081"
-    environment:
-      - "SPARK_MASTER=spark://spark-master:7077"
+      - "PIO_TEMPLATE_NAME=MyRecommendation"
+      - "PIO_RUN_FILE=/deploy/run.sh"
+    volumes:
+      - ./deploy:/deploy

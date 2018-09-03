@@ -10,7 +10,7 @@ if [ x"$PIO_STORAGE_SOURCES_ELASTICSEARCH_TYPE" != "x" ] ; then
   ES_PORT=`echo $PIO_STORAGE_SOURCES_ELASTICSEARCH_PORTS | sed -e "s/,.*//"`
   # Wait for elasticsearch startup
   while [ $RET != 0 -a $COUNT -lt 10 ] ; do
-    echo "[PIO-SETUP] Waiting for ${ES_HOST}..."
+    echo "Waiting for ${ES_HOST}..."
     curl --connect-timeout 60 --retry 10 -s "$ES_HOST:$ES_PORT/_cluster/health?wait_for_status=green&timeout=1m"
     RET=$?
     COUNT=`expr $COUNT + 1`
@@ -19,8 +19,21 @@ if [ x"$PIO_STORAGE_SOURCES_ELASTICSEARCH_TYPE" != "x" ] ; then
 fi
 
 # Check PIO status
-$PIO_HOME/bin/pio status
+RET=-1
+COUNT=0
+while [ $RET != 0 -a $COUNT -lt 10 ] ; do
+  echo "Waiting for PredictionIO..."
+  $PIO_HOME/bin/pio status
+  RET=$?
+  COUNT=`expr $COUNT + 1`
+  sleep 1
+done
 
-# Start PIO Event Server
-$PIO_HOME/bin/pio eventserver
+
+if [ x"$PIO_RUN_FILE" != "x" ] ; then
+  sh $PIO_RUN_FILE
+else
+  # Start PIO Event Server
+  $PIO_HOME/bin/pio eventserver
+fi
 
