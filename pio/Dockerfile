@@ -40,7 +40,8 @@ RUN bash ./make-distribution.sh \
       -Dspark.version=$SPARK_VERSION \
       -Dhadoop.version=$HADOOP_VERSION \
       -Delasticsearch.version=$ELASTICSEARCH_VERSION \
-      --with-deb
+      --with-deb && \
+      rm -rf /root/.ivy2 /root/.sbt
 
 RUN dpkg -i ./assembly/target/predictionio_*.deb
 
@@ -57,11 +58,11 @@ WORKDIR /usr/share
 RUN curl -o /opt/src/spark-$SPARK_VERSION.tgz \
     http://www-us.apache.org/dist/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop2.7.tgz && \
     tar zxvf /opt/src/spark-$SPARK_VERSION.tgz && \
-    echo "SPARK_HOME="`pwd`/`ls -d spark*` >> /etc/predictionio/pio-env.sh
+    echo "SPARK_HOME="`pwd`/`ls -d spark*` >> /etc/predictionio/pio-env.sh && \
+    rm -rf /opt/src
 
 WORKDIR /templates
 ADD pio_run /usr/bin/pio_run
-RUN rm -rf /opt/src
 
 EXPOSE 7070
 EXPOSE 8000
