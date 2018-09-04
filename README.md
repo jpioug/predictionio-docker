@@ -1,13 +1,10 @@
 Apache PredictionIO Docker
 ==========================
 
-## Development
+## Overview
 
-### Build PredictionIO Image
+PredictionIO Docker provides Docker image for use in development and production environment.
 
-```
-docker build -t predictionio/pio pio
-```
 
 ## Usage
 
@@ -38,7 +35,7 @@ docker-compose -f docker-compose.yml \
   up
 ```
 
-To use localfs as model storage, change as below: 
+To use localfs as model storage, change as below:
 
 ```
 docker-compose -f docker-compose.yml \
@@ -217,3 +214,19 @@ docker-compose -f docker-compose.yml \
 
 See `deploy/run.sh` and `docker-compose.deploy.yml` if changing a deployment.
 
+
+## Development
+
+### Build Docker Image
+
+```
+docker build -t predictionio/pio pio
+```
+
+### Push Docker Image
+
+```
+docker push predictionio/pio:latest
+docker tag predictionio/pio:latest predictionio/pio:$PIO\_VERSION
+docker push predictionio/pio:$PIO\_VERSION
+```
