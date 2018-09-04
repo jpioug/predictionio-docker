@@ -181,7 +181,6 @@ docker-compose -f docker-compose.yml \
 
 ### Run with Spark Cluster
 
-TBD(wait for bde2020/spark-master:2.2.2-hadoop2.7 image)
 Adding `docker-compose.spark.yml`, you can use Spark cluster on `pio train`.
 
 ```
@@ -192,6 +191,12 @@ docker-compose -f docker-compose.yml \
   -f elasticsearch/docker-compose.event.yml \
   -f localfs/docker-compose.model.yml \
   up
+```
+
+To submit a training task to Spark Cluster, run `pio-deploy train` with `--master` option:
+
+```
+pio-docker train -- --master spark://spark-master:7077
 ```
 
 See `docker-compose.spark.yml` if changing settings for Spark Cluster.
