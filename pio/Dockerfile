@@ -41,9 +41,9 @@ RUN bash ./make-distribution.sh \
       -Dhadoop.version=$HADOOP_VERSION \
       -Delasticsearch.version=$ELASTICSEARCH_VERSION \
       --with-deb && \
-      rm -rf /root/.ivy2 /root/.sbt
+    dpkg -i ./assembly/target/predictionio_*.deb && \
+    rm -rf /opt/src/predictionio/*
 
-RUN dpkg -i ./assembly/target/predictionio_*.deb
 
 RUN cp /etc/predictionio/pio-env.sh /etc/predictionio/pio-env.sh.orig && \
     echo "#!/usr/bin/env bash" > /etc/predictionio/pio-env.sh
