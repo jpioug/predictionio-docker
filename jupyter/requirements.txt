@@ -1,3 +1,4 @@
+cython
 google-cloud
 h5py
 ipywidgets
@@ -6,6 +7,7 @@ keras
 matplotlib
 pandas
 pandas-gbq
+predictionio
 sklearn
 tensor2tensor
 tensorflow

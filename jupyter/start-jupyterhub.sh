@@ -17,6 +17,10 @@
 # limitations under the License.
 #
 
+env | grep ^PIO_ >> /etc/predictionio/pio-env.sh
 sh /usr/bin/pio_run &
-PYSPARK_PYTHON=$CONDA_DIR/bin/python PYSPARK_DRIVER_PYTHON=$CONDA_DIR/bin/jupyterhub $PIO_HOME/bin/pio-shell --with-pyspark
+
+PYSPARK_PYTHON=$CONDA_DIR/bin/python \
+PYSPARK_DRIVER_PYTHON=$CONDA_DIR/bin/jupyterhub \
+$PIO_HOME/bin/pio-shell --with-pyspark
 
