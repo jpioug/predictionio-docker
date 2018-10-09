@@ -17,7 +17,8 @@
 
 FROM openjdk:8
 
-ENV PIO_TAG=v0.12.1
+ARG PIO_GIT_URL=https://github.com/apache/predictionio.git
+ARG PIO_TAG=v0.13.0
 ENV SCALA_VERSION=2.11.12
 ENV SPARK_VERSION=2.2.2
 ENV HADOOP_VERSION=2.7.7
@@ -32,9 +33,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/src
-RUN git clone https://github.com/apache/predictionio.git
+RUN git clone -b $PIO_TAG $PIO_GIT_URL
 WORKDIR /opt/src/predictionio
-RUN git checkout refs/tags/$PIO_TAG
 RUN bash ./make-distribution.sh \
       -Dscala.version=$SCALA_VERSION \
       -Dspark.version=$SPARK_VERSION \
@@ -49,8 +49,6 @@ RUN cp /etc/predictionio/pio-env.sh /etc/predictionio/pio-env.sh.orig && \
     echo "#!/usr/bin/env bash" > /etc/predictionio/pio-env.sh
 RUN curl -o $PIO_HOME/lib/postgresql-$PGSQL_VERSION.jar \
     http://central.maven.org/maven2/org/postgresql/postgresql/$PGSQL_VERSION/postgresql-$PGSQL_VERSION.jar && \
-    curl -o $PIO_HOME/lib/mysql-connector-java-$MYSQL_VERSION.jar \
-    http://central.maven.org/maven2/mysql/mysql-connector-java/$MYSQL_VERSION/mysql-connector-java-$MYSQL_VERSION.jar && \
     echo "POSTGRES_JDBC_DRIVER=$PIO_HOME/lib/postgresql-$PGSQL_VERSION.jar" >> /etc/predictionio/pio-env.sh && \
     echo "MYSQL_JDBC_DRIVER=$PIO_HOME/lib/mysql-connector-java-$MYSQL_VERSION.jar" >> /etc/predictionio/pio-env.sh
 

@@ -35,6 +35,14 @@ if [ x"$PIO_STORAGE_SOURCES_ELASTICSEARCH_TYPE" != "x" ] ; then
   done
 fi
 
+# check mysql jar file
+if [ x"$PIO_STORAGE_SOURCES_MYSQL_TYPE" != "x" ] ; then
+  MYSQL_JAR_FILE=$PIO_HOME/lib/mysql-connector-java-$MYSQL_VERSION.jar
+  if [ ! -f $MYSQL_JAR_FILE ] ; then
+    curl -o $MYSQL_JAR_FILE http://central.maven.org/maven2/mysql/mysql-connector-java/$MYSQL_VERSION/mysql-connector-java-$MYSQL_VERSION.jar
+  fi
+fi
+
 # Check PIO status
 RET=-1
 COUNT=0
