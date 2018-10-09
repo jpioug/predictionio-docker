@@ -231,6 +231,16 @@ docker-compose -f docker-compose.yml \
 
 See `deploy/run.sh` and `docker-compose.deploy.yml` if changing a deployment.
 
+### Run with Jupyter
+
+```
+docker-compose -f docker-compose.jupyter.yml \
+  -f pgsql/docker-compose.base.yml \
+  -f pgsql/docker-compose.meta.yml \
+  -f pgsql/docker-compose.event.yml \
+  -f pgsql/docker-compose.model.yml \
+  up
+```
 
 ## Development
 
@@ -238,6 +248,7 @@ See `deploy/run.sh` and `docker-compose.deploy.yml` if changing a deployment.
 
 ```
 docker build -t predictionio/pio pio
+docker build -t predictionio/pio-jupyter jupyter
 ```
 
 ### Push Docker Image

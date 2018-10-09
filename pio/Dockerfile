@@ -42,6 +42,7 @@ RUN bash ./make-distribution.sh \
       -Delasticsearch.version=$ELASTICSEARCH_VERSION \
       --with-deb && \
     dpkg -i ./assembly/target/predictionio_*.deb && \
+    cp -r ./python /usr/share/predictionio && \
     rm -rf /opt/src/predictionio/*
 
 
