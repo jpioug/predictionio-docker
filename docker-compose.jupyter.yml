@@ -22,6 +22,9 @@ services:
       - 8000:8000
       - 8888:8888
     volumes:
-      - ./templates:/templates
       - ./templates:/home/jovyan/templates
+    environment:
+      - CHOWN_HOME=yes
+      - GRANT_SUDO=yes
+      - VOLUME_UID=yes
     dns: 8.8.8.8

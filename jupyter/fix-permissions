@@ -17,10 +17,20 @@
 # limitations under the License.
 #
 
-env | grep ^PIO_ >> /etc/predictionio/pio-env.sh
-sh /usr/bin/pio_run &
+set -e
 
-PYSPARK_PYTHON=$CONDA_DIR/bin/python \
-PYSPARK_DRIVER_PYTHON=$CONDA_DIR/bin/jupyterhub \
-$PIO_HOME/bin/pio-shell --with-pyspark
-
+for d in $@; do
+  find "$d" \
+    ! \( \
+      -group $NB_GID \
+      -a -perm -g+rwX  \
+    \) \
+    -exec chgrp $NB_GID {} \; \
+    -exec chmod g+rwX {} \;
+  find "$d" \
+    \( \
+      -type d \
+      -a ! -perm -6000  \
+    \) \
+    -exec chmod +6000 {} \;
+done

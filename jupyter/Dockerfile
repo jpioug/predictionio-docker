@@ -19,57 +19,82 @@ FROM predictionio/pio:latest
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt update && apt upgrade -y && apt install -y locales && rm -rf /var/lib/apt/lists/*
-RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
-
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
-
-ENV NB_USER jovyan
-ENV NB_UID 1000
-ENV CONDA_DIR=/opt/conda
-ENV PATH $CONDA_DIR/bin:$PATH
-ENV PIP_DEFAULT_TIMEOUT 180
-
-RUN apt-get update && apt install -y build-essential curl git gcc make openssl libssl-dev libbz2-dev \
-    libreadline-dev libsqlite3-dev cmake libxml2-dev wget bzip2 sudo vim unzip \
+RUN apt-get update \
+    && apt install -y build-essential curl git gcc make openssl libssl-dev libbz2-dev \
+    apt-transport-https ca-certificates g++ gnupg graphviz lsb-release openssh-client zip \
+    libreadline-dev libsqlite3-dev cmake libxml2-dev wget bzip2 sudo vim unzip locales \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget --quiet https://github.com/krallin/tini/releases/download/v0.18.0/tini && \
-    echo "12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855 *tini" | sha256sum -c - && \
-    mv tini /usr/local/bin/tini && \
-    chmod +x /usr/local/bin/tini
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
 
-RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh -O /tmp/miniconda.sh \
+ENV LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    NB_USER=jovyan \
+    NB_UID=1000 \
+    NB_GID=100 \
+    CONDA_DIR=/opt/conda \
+    PIP_DEFAULT_TIMEOUT=180
+ENV PATH=$CONDA_DIR/bin:$PATH \
+    HOME=/home/$NB_USER
+
+ADD fix-permissions /usr/local/bin/fix-permissions
+RUN chmod +x /usr/local/bin/fix-permissions \
+    && groupadd wheel -g 11 \
+    && echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su \
+    && useradd -m -s /bin/bash -N -u $NB_UID $NB_USER \
+    && mkdir -p $CONDA_DIR \
+    && chmod g+w /etc/passwd \
+    && fix-permissions $HOME \
+    && fix-permissions $CONDA_DIR
+
+USER $NB_USER
+
+ENV MINICONDA_VERSION 4.5.11
+RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh -O /tmp/miniconda.sh \
     && echo 'e1045ee415162f944b6aebfe560b8fee */tmp/miniconda.sh' | md5sum -c - \
-    && bash /tmp/miniconda.sh -f -b -p /opt/conda \
-    && /opt/conda/bin/conda install --yes -c conda-forge \
-    python=3.6 sqlalchemy tornado jinja2 traitlets requests pip nodejs configurable-http-proxy ncurses \
-    && /opt/conda/bin/pip install --upgrade pip \
-    && /opt/conda/bin/conda clean --all \
-    && rm /tmp/miniconda.sh
+    && bash /tmp/miniconda.sh -f -b -p $CONDA_DIR \
+    && rm /tmp/miniconda.sh \
+    && conda config --system --prepend channels conda-forge \
+    && conda config --system --set auto_update_conda false \
+    && conda config --system --set show_channel_urls true \
+    && conda install --quiet --yes conda="${MINICONDA_VERSION%.*}.*" \
+    && conda update --all --quiet --yes \
+    && conda clean -tipsy \
+    && rm -rf /home/$NB_USER/.cache/yarn \
+    && fix-permissions $CONDA_DIR \
+    && fix-permissions /home/$NB_USER
+
+RUN conda install --quiet --yes 'tini=0.18.0' \
+    && conda list tini | grep tini | tr -s ' ' | cut -d ' ' -f 1,2 >> $CONDA_DIR/conda-meta/pinned \
+    && conda clean -tipsy \
+    && fix-permissions $CONDA_DIR \
+    && fix-permissions /home/$NB_USER
+
+RUN conda install --quiet --yes 'notebook=5.6.*' 'jupyterlab=0.34.*' nodejs\
+    && jupyter labextension install @jupyterlab/hub-extension@^0.11.0 \
+    && jupyter notebook --generate-config \
+    && conda clean -tipsy \
+    && npm cache clean --force \
+    && rm -rf $CONDA_DIR/share/jupyter/lab/staging \
+    && rm -rf /home/$NB_USER/.cache/yarn \
+    && fix-permissions $CONDA_DIR \
+    && fix-permissions /home/$NB_USER
 
 ADD requirements.txt /tmp/requirements.txt
-RUN python3 -m pip install notebook \
-    && python3 -m pip install jupyter \
-    && python3 -m pip install jupyterhub \
-    && python3 -m pip install -r /tmp/requirements.txt \
-    && rm -rf /root/.cache/pip/*
+RUN pip --no-cache-dir install -r /tmp/requirements.txt \
+    && fix-permissions $CONDA_DIR \
+    && fix-permissions /home/$NB_USER
 
-RUN jupyter contrib nbextension install --system
+COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/
+COPY start-jupyter.sh /usr/local/bin/
 
-RUN useradd -G sudo -m -s /bin/bash -u $NB_UID $NB_USER \
-    && echo "$NB_USER:$NB_USER" | chpasswd \
-    && chown -R $NB_USER /home/$NB_USER
-
-WORKDIR /opt/jupyterhub/
-ADD jupyterhub_config.py /opt/jupyterhub/jupyterhub_config.py
-ADD start-jupyterhub.sh /usr/local/bin/start-jupyterhub.sh
+USER root
 RUN chmod +x /usr/local/bin/*.sh
 
 EXPOSE 8888
+WORKDIR $HOME
 ENTRYPOINT ["tini", "--"]
-CMD ["start-jupyterhub.sh"]
+CMD ["/usr/local/bin/start-jupyter.sh"]
 

@@ -10,17 +10,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import sys
 
 c = get_config()
-
-c.JupyterHub.ip = '0.0.0.0'
-c.JupyterHub.port = 8888
-c.JupyterHub.log_level = 10
-
-c.Authenticator.whitelist = whitelist = set()
-c.Authenticator.admin_users = admin = set()
-
-c.Spawner.env_keep.append('LD_LIBRARY_PATH')
+c.NotebookApp.ip = '*'
+c.NotebookApp.port = 8888
+c.NotebookApp.open_browser = False
 
