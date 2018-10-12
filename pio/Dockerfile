@@ -43,6 +43,7 @@ RUN bash ./make-distribution.sh \
       --with-deb && \
     dpkg -i ./assembly/target/predictionio_*.deb && \
     cp -r ./python /usr/share/predictionio && \
+    mkdir /var/log/predictionio && \
     rm -rf /opt/src/predictionio/*
 
 

@@ -233,6 +233,8 @@ See `deploy/run.sh` and `docker-compose.deploy.yml` if changing a deployment.
 
 ### Run with Jupyter
 
+You can launch PredictionIO with Jupyter.
+
 ```
 docker-compose -f docker-compose.jupyter.yml \
   -f pgsql/docker-compose.base.yml \

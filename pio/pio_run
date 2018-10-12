@@ -41,6 +41,8 @@ if [ x"$PIO_STORAGE_SOURCES_MYSQL_TYPE" != "x" ] ; then
   if [ ! -f $MYSQL_JAR_FILE ] ; then
     curl -o $MYSQL_JAR_FILE http://central.maven.org/maven2/mysql/mysql-connector-java/$MYSQL_VERSION/mysql-connector-java-$MYSQL_VERSION.jar
   fi
+else
+  unset MYSQL_JDBC_DRIVER
 fi
 
 # Check PIO status
