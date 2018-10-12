@@ -22,6 +22,9 @@ set -e
 # store PIO environment to pio-env.sh
 PIO_ENV_FILE=/etc/predictionio/pio-env.sh
 env | grep ^PIO_ >> $PIO_ENV_FILE
+if [ $(grep _MYSQL_ $PIO_ENV_FILE | wc -l) = 0 ] ; then
+  sed -i "s/^MYSQL/#MYSQL/" $PIO_ENV_FILE
+fi
 
 # start event server
 sh /usr/bin/pio_run &
