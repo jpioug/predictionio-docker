@@ -12,20 +12,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-version: "3"
-services:
-  pio:
-    image: predictionio/pio-jupyter:latest
-    ports:
-      - 7070:7070
-      - 8000:8000
-      - 8888:8888
-    volumes:
-      - ./templates:/home/jovyan/templates
-      - ./.ivy2:/home/jovyan/.ivy2
-    environment:
-      - CHOWN_HOME=yes
-      - GRANT_SUDO=yes
-      - VOLUME_UID=yes
-    dns: 8.8.8.8
