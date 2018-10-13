@@ -51,9 +51,9 @@ RUN chmod +x /usr/local/bin/fix-permissions \
 
 USER $NB_USER
 
-ENV MINICONDA_VERSION 4.5.11
+ENV MINICONDA_VERSION 4.4.10
 RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh -O /tmp/miniconda.sh \
-    && echo 'e1045ee415162f944b6aebfe560b8fee */tmp/miniconda.sh' | md5sum -c - \
+    && echo 'bec6203dbb2f53011e974e9bf4d46e93 */tmp/miniconda.sh' | md5sum -c - \
     && bash /tmp/miniconda.sh -f -b -p $CONDA_DIR \
     && rm /tmp/miniconda.sh \
     && conda config --system --prepend channels conda-forge \
