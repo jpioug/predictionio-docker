@@ -244,12 +244,19 @@ docker-compose -f docker-compose.jupyter.yml \
   up
 ```
 
+For more information, see [JUPYTER.md](./JUPYTER.md).
+
 ## Development
 
-### Build Docker Image
+### Build Base Docker Image
 
 ```
 docker build -t predictionio/pio pio
+```
+
+### Build Jupyter Docker Image
+
+```
 docker build -t predictionio/pio-jupyter jupyter
 ```
 
@@ -257,6 +264,6 @@ docker build -t predictionio/pio-jupyter jupyter
 
 ```
 docker push predictionio/pio:latest
-docker tag predictionio/pio:latest predictionio/pio:$PIO\_VERSION
-docker push predictionio/pio:$PIO\_VERSION
+docker tag predictionio/pio:latest predictionio/pio:$PIO_VERSION
+docker push predictionio/pio:$PIO_VERSION
 ```
