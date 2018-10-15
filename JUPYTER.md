@@ -40,10 +40,10 @@ docker-compose -f docker-compose.jupyter.yml \
 The above command prints a token to the console as below.
 
 ```
-pio_1       |         http://(2aaf67361022 or 127.0.0.1):8888/?token=e86a634b4ab7e2c8bcd86aea9def3eb48183c043eac86f3e
+pio_1       |         http://(3aaf67361022 or 127.0.0.1):8888/?token=e87a634b4ab7e2c8bcd86aea9def3eb48183c043eac86f3e
 ```
 
-Open `http://127.0.0.1:8888/` with the token, and then open a new terminal from New pulldown button.
+Open `http://127.0.0.1:8888/`, type the token, and then open a new terminal in Jupyter from `New` pulldown button.
 
 ## Getting Started With Scala Based Template
 
@@ -74,13 +74,13 @@ pio app new MyApp1
 This command prints an access key as below.
 
 ```
-[INFO] [Pio$] Access Key: bbe7xRHN1j3Sa8WeAT8TSxt5op3lUqhvXmKY1gLRjg70K-DUhHIJJ0-UzgKumxGm
+[INFO] [Pio$] Access Key: bbe8xRHN1j3Sa8WeAT8TSxt5op3lUqhvXmKY1gLRjg70K-DUhHIJJ0-UzgKumxGm
 ```
 
 Set it to an environment variable `ACCESS_KEY`.
 
 ```
-ACCESS_KEY=bbe7xRHN1j3Sa8WeAT8TSxt5op3lUqhvXmKY1gLRjg70K-DUhHIJJ0-UzgKumxGm
+ACCESS_KEY=bbe8xRHN1j3Sa8WeAT8TSxt5op3lUqhvXmKY1gLRjg70K-DUhHIJJ0-UzgKumxGm
 ```
 
 ### Import Training Data
@@ -146,7 +146,7 @@ pio build --verbose
 
 ### EDA
 
-To do data analysis, open `templates/predictionio-template-iris/eda.ipynb` on Jupyter Notebook.
+To do data analysis, open `templates/predictionio-template-iris/eda.ipynb` on Jupyter.
 
 ### Create Model
 
