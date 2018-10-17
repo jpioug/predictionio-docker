@@ -88,7 +88,7 @@ RUN pip --no-cache-dir install -r /tmp/requirements.txt \
     && fix-permissions /home/$NB_USER
 
 COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/
-COPY start-jupyter.sh /usr/local/bin/
+COPY start*.sh /usr/local/bin/
 
 USER root
 RUN chmod +x /usr/local/bin/*.sh
