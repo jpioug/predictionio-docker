@@ -52,7 +52,7 @@ Open `http://127.0.0.1:8888/`, type the token, and then open a new terminal in J
 Clone a template using Git:
 
 ```
-cd template
+cd templates/
 git clone https://github.com/apache/predictionio-template-recommender.git
 cd predictionio-template-recommender/
 ```
