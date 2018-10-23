@@ -19,20 +19,6 @@
 
 set -e
 
-# store PIO environment to pio-env.sh
-PIO_ENV_FILE=/etc/predictionio/pio-env.sh
-env | grep ^PIO_ >> $PIO_ENV_FILE
-if [ $(grep _MYSQL_ $PIO_ENV_FILE | wc -l) = 0 ] ; then
-  sed -i "s/^MYSQL/#MYSQL/" $PIO_ENV_FILE
-fi
-
-# start event server
-sh /usr/bin/pio_run &
-
-export PYSPARK_PYTHON=$CONDA_DIR/bin/python
-export PYSPARK_DRIVER_PYTHON=$CONDA_DIR/bin/jupyter
-export PYSPARK_DRIVER_PYTHON_OPTS=notebook
-
 if [[ "$VOLUME_UID" == "1" || "$VOLUME_UID" == 'yes' ]]; then
   DIR_UID=`ls -lnd /home/jovyan/templates | awk '{print $3}'`
   if [ x"$DIR_UID" != "x" -a x"$DIR_UID" != "x0" ] ; then

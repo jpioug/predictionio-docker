@@ -21,8 +21,7 @@ Jupyter With PredictionIO
 ## Overview
 
 Using Jupyter based docker, you can use Jupyter Notebook with PredictionIO environment.
-It help your exploratory data analysis (EDA).
-
+It helps you with your exploratory data analysis (EDA).
 
 ## Run Jupyter Notebook
 
