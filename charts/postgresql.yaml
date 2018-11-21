@@ -1,0 +1,6 @@
+postgresqlUsername: pio
+postgresqlPassword: pio
+
+#postgresqlConfiguration:
+#  listenAddresses: "'*'"
+

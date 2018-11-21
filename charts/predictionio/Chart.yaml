@@ -1,0 +1,11 @@
+name: predictionio
+version: 0.1.0
+appVersion: 0.13.0
+description: Machine learning server
+home: http://predictionio.apache.org
+icon: http://predictionio.apache.org/images/logos/logo-ee2b9bb3.png
+sources:
+  - https://github.com/apache/predictionio
+maintainers:
+  - name: Shinsuke Sugaya
+    email: shinsuke@apache.org

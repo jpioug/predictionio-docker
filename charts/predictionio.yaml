@@ -1,0 +1,23 @@
+pio:
+  env:
+    - name: PIO_STORAGE_SOURCES_PGSQL_TYPE
+      value: jdbc
+    - name: PIO_STORAGE_SOURCES_PGSQL_URL
+      value: "jdbc:postgresql://my-postgresql-postgresql.default.svc.cluster.local:5432/pio"
+    - name: PIO_STORAGE_SOURCES_PGSQL_USERNAME
+      value: pio
+    - name: PIO_STORAGE_SOURCES_PGSQL_PASSWORD
+      value: pio
+    - name: PIO_STORAGE_REPOSITORIES_MODELDATA_NAME
+      value: pio_model
+    - name: PIO_STORAGE_REPOSITORIES_MODELDATA_SOURCE
+      value: PGSQL
+    - name: PIO_STORAGE_REPOSITORIES_METADATA_NAME
+      value: pio_meta
+    - name: PIO_STORAGE_REPOSITORIES_METADATA_SOURCE
+      value: PGSQL
+    - name: PIO_STORAGE_REPOSITORIES_EVENTDATA_NAME
+      value: pio_event
+    - name: PIO_STORAGE_REPOSITORIES_EVENTDATA_SOURCE
+      value: PGSQL
+

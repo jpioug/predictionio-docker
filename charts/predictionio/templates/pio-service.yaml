@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "predictionio.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "predictionio.name" . }}
+    helm.sh/chart: {{ include "predictionio.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.pio.service.type }}
+  ports:
+    - port: {{ .Values.pio.service.port }}
+      targetPort: 8888
+      protocol: TCP
+      name: jupyter
+  selector:
+    app.kubernetes.io/name: {{ include "predictionio.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
