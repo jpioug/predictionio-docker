@@ -1,6 +1,7 @@
 postgresqlUsername: pio
 postgresqlPassword: pio
+postgresqlDatabase: pio
 
-#postgresqlConfiguration:
-#  listenAddresses: "'*'"
-
+# for testing
+persistence:
+  enabled: false

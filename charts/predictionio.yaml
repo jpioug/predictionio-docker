@@ -3,7 +3,7 @@ pio:
     - name: PIO_STORAGE_SOURCES_PGSQL_TYPE
       value: jdbc
     - name: PIO_STORAGE_SOURCES_PGSQL_URL
-      value: "jdbc:postgresql://my-postgresql-postgresql.default.svc.cluster.local:5432/pio"
+      value: "jdbc:postgresql://my-postgresql-postgresql:5432/pio"
     - name: PIO_STORAGE_SOURCES_PGSQL_USERNAME
       value: pio
     - name: PIO_STORAGE_SOURCES_PGSQL_PASSWORD
