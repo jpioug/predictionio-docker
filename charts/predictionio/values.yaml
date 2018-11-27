@@ -28,6 +28,8 @@ pio:
       value: pio_event
     - name: PIO_STORAGE_REPOSITORIES_EVENTDATA_SOURCE
       value: PGSQL
+    - name: PYSPARK_DRIVER_PYTHON_OPTS
+      value: "notebook --NotebookApp.token=''"
   resources: {}
   nodeSelector: {}
   tolerations: []
