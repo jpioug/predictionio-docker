@@ -9,7 +9,7 @@ Spark:
 Master:
   Name: master
   Image: "bde2020/spark-master"
-  ImageTag: "2.3.2-hadoop2.7"
+  ImageTag: "2.2.2-hadoop2.7"
   Replicas: 1
   Component: "spark-master"
   Cpu: "100m"
@@ -29,7 +29,7 @@ WebUi:
 Worker:
   Name: worker
   Image: "bde2020/spark-worker"
-  ImageTag: "2.3.2-hadoop2.7"
+  ImageTag: "2.2.2-hadoop2.7"
   Replicas: 3
   Component: "spark-worker"
   Cpu: "100m"
