@@ -20,7 +20,7 @@ Apache Spark is a fast and general-purpose cluster computing system.
 
 * http://spark.apache.org/
 
-Inspired from Helm Classic chart https://github.com/helm/charts
+This chart is based on stable/spark in [Helm Charts](https://github.com/helm/charts).
 
 ## Chart Details
 This chart will do the following:
@@ -50,8 +50,8 @@ The following table lists the configurable parameters of the Spark chart and the
 | Parameter               | Description                        | Default                                                    |
 | ----------------------- | ---------------------------------- | ---------------------------------------------------------- |
 | `Master.Name`           | Spark master name                  | `spark-master`                                             |
-| `Master.Image`          | Container image name               | `k8s.gcr.io/spark`                                         |
-| `Master.ImageTag`       | Container image tag                | `1.5.1_v3`                                                 |
+| `Master.Image`          | Container image name               | `bde2020/spark-master`                                     |
+| `Master.ImageTag`       | Container image tag                | `2.2.2-hadoop2.7`                                          |
 | `Master.Replicas`       | k8s deployment replicas            | `1`                                                        |
 | `Master.Component`      | k8s selector key                   | `spark-master`                                             |
 | `Master.Cpu`            | container requested cpu            | `100m`                                                     |
@@ -74,8 +74,8 @@ The following table lists the configurable parameters of the Spark chart and the
 | Parameter                    | Description                          | Default                                                    |
 | -----------------------      | ------------------------------------ | ---------------------------------------------------------- |
 | `Worker.Name`                | Spark worker name                    | `spark-worker`                                             |
-| `Worker.Image`               | Container image name                 | `k8s.gcr.io/spark`                                         |
-| `Worker.ImageTag`            | Container image tag                  | `1.5.1_v3`                                                 |
+| `Worker.Image`               | Container image name                 | `bde2020/spark-worker`                                     |
+| `Worker.ImageTag`            | Container image tag                  | `2.2.2-hadoop2.7`                                          |
 | `Worker.Replicas`            | k8s hpa and deployment replicas      | `3`                                                        |
 | `Worker.ReplicasMax`         | k8s hpa max replicas                 | `10`                                                       |
 | `Worker.Component`           | k8s selector key                     | `spark-worker`                                             |
